@@ -389,7 +389,7 @@ private:
 		}
 		bool twoLetters(const string& str) {		//For ID size (Must be only 2 letters)
     		return str.length() == 2;
-}
+		}
 public:
     void displayThird(Inventory& i1) override {
         string new_id;
@@ -403,7 +403,7 @@ public:
         while (newItemTemp) {
             cout << "What category does the item fall under?(Enter the word)\n";
             cout << "[Clothing]\n[Electronics]\n[Entertainment]\n";
-            cout << "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n";
+            cout << "User input: ";
             cin >> new_category_sub;
 			doubleUpper(new_category_sub);							//Quick note: Categorized by option chosen for easy sorting later
             
@@ -767,7 +767,7 @@ class DisplayCategory : public EmptyThird{		//Display by category - Option numbe
 			if(i1.displayCategory(c_key)){
 				cout << endl;
 				system("pause");
-				system("cls");	
+				system("cls");
 			}
 			else if(c_key != 1 or c_key != 2 or c_key != 3){
 				cout << "Category not found\n";
@@ -805,7 +805,7 @@ class SortItems : public EmptyThird{			//Sort Items - Option number 7
 			while(temp_sort){
 				cout << "-_-_-_-_-_-_[Sorting items - Enter the number]_-_-_-_-_-_-_-\n";
 				cout << "Sort by [1 - Quantity][2 - price]\n";
-				cout << "-_-_-_-_-_-_-_-_-_-_-_-_-\n";
+				cout << "User input: ";
 				cin >> choice;
 				
 				if(choice == 1 || choice == 2){
@@ -825,12 +825,14 @@ class SortItems : public EmptyThird{			//Sort Items - Option number 7
 			while (temp_sort2){
 				cout << "-_-_-_-_-_-_[Sorting items]_-_-_-_-_-_-_-\n";
 				cout << "Sort in [1 - Ascending][2 - Descending]\n";
-				cout << "-_-_-_-_-_-_-_-_-_-_-_-_-\n";
+				cout << "User input: ";
 				cin >> choice2;
 				
 				if (choice2 == 1 || choice2 == 2){
 					i1.sortItemtype(choice, choice2);
 					temp_sort2 = false;
+					cin.clear();
+        	        cin.ignore(1000, '\n');
 				}
 				else{
 					cout << "Invalid input\n";
@@ -879,13 +881,24 @@ int main() {
 
     // Other variables
     int action;
+    string valid;
 
     // Main Process
     bool temp = true;
     while (temp) {
         m1.displayMenu();
         cin >> action;
-
+        valid = action;
+        
+        char extra;											//Extra character
+		if (cin.get(extra) && extra != '\n') {				//For validating if theres a second input
+                cout << "Invalid input. Please enter a single number\n";
+                system("pause");
+				system("cls");
+				cin.clear();
+                cin.ignore(1000, '\n');
+            } 
+		else{
         switch (action) {		//Add item		[done]		[Validated]
             case 1: {
                 a1.displayThird(i1);
@@ -932,6 +945,7 @@ int main() {
                 break;
             }
         }
+		}
     }
     return 0;
 }
